@@ -8,6 +8,7 @@ from typing import Optional, List
 from datetime import datetime
 import multiprocessing as mp
 import traceback
+import queue
 
 from src.config import TASKS_PER_WORKER, PROGRESS_UPDATE_INTERVAL
 from src.database import DatabaseManager
@@ -59,8 +60,27 @@ class Worker:
         
         logger.info(f"Worker {self.worker_id} cleaned up")
     
+    # In worker.py, modify the process_study method to skip studies without abstracts:
+
     async def process_study(self, study: Study):
         """Process a single study"""
+        # Skip if no abstract
+        if not study.abstract:
+            logger.warning(f"Worker {self.worker_id}: Skipping study {study.id} - no abstract")
+            
+            # Save as failed with specific reason
+            failed_paper = FailedPaper(
+                study=study,
+                error="No abstract available",
+                error_type="NoAbstract",
+                attempts=1,
+                last_attempt=datetime.now()
+            )
+            await self.storage.save_failed(failed_paper)
+            
+            self.failed_count += 1
+            return
+        
         try:
             # Analyze with DeepSeek
             result = await self.processor_pool.process_study(study)
@@ -174,8 +194,8 @@ class Worker:
                     # Process the batch
                     await self.process_batch(batch)
                     
-                except asyncio.TimeoutError:
-                    continue
+                except queue.Empty:  # Changed from asyncio.TimeoutError
+                    continue  # This is normal, just check for shutdown
                 except Exception as e:
                     logger.error(f"Worker {self.worker_id}: Error in main loop: {e}")
                     logger.debug(traceback.format_exc())

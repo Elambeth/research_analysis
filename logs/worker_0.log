@@ -1,0 +1,31 @@
+2025-06-10 21:28:31,172 - Worker-0 - src.processor - INFO - Initialized processor pool with 3 processors
+2025-06-10 21:28:31,172 - Worker-0 - src.worker - INFO - Worker 0 initialized
+2025-06-10 21:28:31,172 - Worker-0 - src.worker - INFO - Worker 0 starting
+2025-06-10 21:28:32,174 - Worker-0 - src.worker - ERROR - Worker 0: Error in main loop: 
+2025-06-10 21:28:34,204 - Worker-0 - src.worker - ERROR - Worker 0: Error in main loop: 
+2025-06-10 21:28:36,220 - Worker-0 - src.worker - ERROR - Worker 0: Error in main loop: 
+2025-06-10 21:28:38,232 - Worker-0 - src.worker - ERROR - Worker 0: Error in main loop: 
+2025-06-10 21:28:40,245 - Worker-0 - src.worker - ERROR - Worker 0: Error in main loop: 
+2025-06-10 21:28:42,266 - Worker-0 - src.worker - ERROR - Worker 0: Error in main loop: 
+2025-06-10 21:28:44,297 - Worker-0 - src.worker - ERROR - Worker 0: Error in main loop: 
+2025-06-10 21:28:45,304 - Worker-0 - src.worker - INFO - Worker 0: Received shutdown signal
+2025-06-10 21:28:45,305 - Worker-0 - src.worker - INFO - Worker 0: Final stats - Processed: 0, Failed: 0
+2025-06-10 21:28:45,557 - Worker-0 - src.storage - INFO - Storage finalized. Total batches: 0
+2025-06-10 21:28:45,557 - Worker-0 - src.worker - INFO - Worker 0 cleaned up
+2025-06-10 21:36:38,169 - Worker-0 - src.processor - INFO - Initialized processor pool with 3 processors
+2025-06-10 21:36:38,169 - Worker-0 - src.worker - INFO - Worker 0 initialized
+2025-06-10 21:36:38,169 - Worker-0 - src.worker - INFO - Worker 0 starting
+2025-06-10 21:36:39,174 - Worker-0 - src.worker - ERROR - Worker 0: Error in main loop: 
+2025-06-10 21:36:41,203 - Worker-0 - src.worker - ERROR - Worker 0: Error in main loop: 
+2025-06-10 21:36:42,207 - Worker-0 - src.worker - INFO - Worker 0: Processing batch 0 with 50 studies
+2025-06-10 21:44:45,454 - Worker-0 - src.processor - INFO - Initialized processor pool with 3 processors
+2025-06-10 21:44:45,454 - Worker-0 - src.worker - INFO - Worker 0 initialized
+2025-06-10 21:44:45,454 - Worker-0 - src.worker - INFO - Worker 0 starting
+2025-06-10 21:44:47,927 - Worker-0 - src.worker - INFO - Worker 0: Processing batch 0 with 50 studies
+2025-06-10 21:53:42,526 - Worker-0 - src.processor - INFO - Initialized processor pool with 3 processors
+2025-06-10 21:53:42,526 - Worker-0 - src.worker - INFO - Worker 0 initialized
+2025-06-10 21:53:42,526 - Worker-0 - src.worker - INFO - Worker 0 starting
+2025-06-10 21:53:56,503 - Worker-0 - src.worker - INFO - Worker 0: Received shutdown signal
+2025-06-10 21:53:56,503 - Worker-0 - src.worker - INFO - Worker 0: Final stats - Processed: 0, Failed: 0
+2025-06-10 21:53:56,763 - Worker-0 - src.storage - INFO - Storage finalized. Total batches: 0
+2025-06-10 21:53:56,764 - Worker-0 - src.worker - INFO - Worker 0 cleaned up

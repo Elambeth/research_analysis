@@ -1,0 +1,97 @@
+2025-06-10 21:28:29,991 - Coordinator - src.coordinator - INFO - Initializing coordinator...
+2025-06-10 21:28:30,053 - Coordinator - src.coordinator - INFO - Started worker 0 (PID: 53404)
+2025-06-10 21:28:30,057 - Coordinator - src.coordinator - INFO - Started worker 1 (PID: 38692)
+2025-06-10 21:28:30,059 - Coordinator - src.coordinator - INFO - Coordinator initialized with 2 workers
+2025-06-10 21:28:30,059 - Coordinator - src.coordinator - INFO - Starting coordinator...
+2025-06-10 21:28:38,047 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplement_studies?select=id&last_analyzed_at=is.null "HTTP/2 206 Partial Content"
+2025-06-10 21:28:38,060 - Coordinator - src.database - INFO - Total unanalyzed studies: 121718
+2025-06-10 21:28:38,060 - Coordinator - src.coordinator - INFO - TEST MODE: Limiting processing to 50 papers
+2025-06-10 21:28:38,060 - Coordinator - src.coordinator - INFO - Found 50 unanalyzed studies to process
+2025-06-10 21:28:38,071 - Coordinator - src.coordinator - ERROR - Memory usage too high: 85.0%
+2025-06-10 21:28:38,071 - Coordinator - src.coordinator - ERROR - System health check failed, stopping distribution
+2025-06-10 21:28:38,071 - Coordinator - src.coordinator - INFO - Work distribution complete. Distributed 0 studies in 0 batches
+2025-06-10 21:28:45,090 - Coordinator - src.coordinator - INFO - All work distributed and queue empty
+2025-06-10 21:28:45,090 - Coordinator - src.coordinator - INFO - Coordinator shutting down...
+2025-06-10 21:28:45,091 - Coordinator - src.coordinator - INFO - Stopping workers...
+2025-06-10 21:28:45,636 - Coordinator - src.coordinator - INFO - Worker 0 stopped
+2025-06-10 21:28:45,636 - Coordinator - src.coordinator - INFO - Worker 1 stopped
+2025-06-10 21:28:45,636 - Coordinator - src.coordinator - INFO - Progress: 0/50 (0.0%) | Success rate: 0.00% | Speed: 0.00 papers/sec | Time remaining: inf minutes
+2025-06-10 21:28:45,636 - Coordinator - src.coordinator - INFO - Coordinator shutdown complete. Total runtime: 0.3 minutes
+2025-06-10 21:36:37,101 - Coordinator - src.storage - INFO - Loaded progress: 0/50 papers processed
+2025-06-10 21:36:37,101 - Coordinator - src.coordinator - INFO - Initializing coordinator...
+2025-06-10 21:36:37,118 - Coordinator - src.coordinator - INFO - Started worker 0 (PID: 57084)
+2025-06-10 21:36:37,123 - Coordinator - src.coordinator - INFO - Started worker 1 (PID: 35852)
+2025-06-10 21:36:37,123 - Coordinator - src.coordinator - INFO - Coordinator initialized with 2 workers
+2025-06-10 21:36:37,124 - Coordinator - src.coordinator - INFO - Starting coordinator...
+2025-06-10 21:36:39,294 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplement_studies?select=id&last_analyzed_at=is.null "HTTP/2 206 Partial Content"
+2025-06-10 21:36:39,310 - Coordinator - src.database - INFO - Total unanalyzed studies: 121718
+2025-06-10 21:36:39,310 - Coordinator - src.coordinator - INFO - TEST MODE: Limiting processing to 50 papers
+2025-06-10 21:36:39,310 - Coordinator - src.coordinator - INFO - Found 50 unanalyzed studies to process
+2025-06-10 21:36:40,189 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplement_studies?select=id%2Csupplement_id%2Cpmid%2Ctitle%2Cabstract&last_analyzed_at=is.null&order=supplement_id.asc%2Cid.asc&offset=0&limit=50 "HTTP/2 200 OK"
+2025-06-10 21:36:40,726 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.848 "HTTP/2 200 OK"
+2025-06-10 21:36:40,955 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.850 "HTTP/2 200 OK"
+2025-06-10 21:36:41,492 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.851 "HTTP/2 200 OK"
+2025-06-10 21:36:41,713 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.853 "HTTP/2 200 OK"
+2025-06-10 21:36:41,727 - Coordinator - src.database - INFO - Worker 0: Fetched 50 studies (offset: 0)
+2025-06-10 21:36:41,728 - Coordinator - src.coordinator - INFO - Distributing batch 0 with 50 studies
+2025-06-10 21:36:41,837 - Coordinator - src.coordinator - INFO - Work distribution complete. Distributed 50 studies in 1 batches
+2025-06-10 21:36:52,152 - Coordinator - src.coordinator - INFO - All work distributed and queue empty
+2025-06-10 21:36:52,153 - Coordinator - src.coordinator - INFO - Coordinator shutting down...
+2025-06-10 21:36:52,153 - Coordinator - src.coordinator - INFO - Stopping workers...
+2025-06-10 21:37:22,165 - Coordinator - src.coordinator - WARNING - Worker 0 did not stop gracefully, terminating...
+2025-06-10 21:37:22,165 - Coordinator - src.coordinator - INFO - Worker 0 stopped
+2025-06-10 21:37:22,180 - Coordinator - src.coordinator - INFO - Worker 1 stopped
+2025-06-10 21:37:22,180 - Coordinator - src.coordinator - INFO - Progress: 0/50 (0.0%) | Success rate: 0.00% | Speed: 0.00 papers/sec | Time remaining: inf minutes
+2025-06-10 21:37:22,180 - Coordinator - src.coordinator - INFO - Coordinator shutdown complete. Total runtime: 0.8 minutes
+2025-06-10 21:44:44,300 - Coordinator - src.storage - INFO - Loaded progress: 0/50 papers processed
+2025-06-10 21:44:44,300 - Coordinator - src.coordinator - INFO - Initializing coordinator...
+2025-06-10 21:44:44,308 - Coordinator - src.coordinator - INFO - Started worker 0 (PID: 55240)
+2025-06-10 21:44:44,317 - Coordinator - src.coordinator - INFO - Started worker 1 (PID: 50184)
+2025-06-10 21:44:44,318 - Coordinator - src.coordinator - INFO - Coordinator initialized with 2 workers
+2025-06-10 21:44:44,318 - Coordinator - src.coordinator - INFO - Starting coordinator...
+2025-06-10 21:44:46,556 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplement_studies?select=id&last_analyzed_at=is.null "HTTP/2 206 Partial Content"
+2025-06-10 21:44:46,556 - Coordinator - src.database - INFO - Total unanalyzed studies: 121718
+2025-06-10 21:44:46,556 - Coordinator - src.coordinator - INFO - TEST MODE: Limiting processing to 50 papers
+2025-06-10 21:44:46,556 - Coordinator - src.coordinator - INFO - Found 50 unanalyzed studies to process
+2025-06-10 21:44:47,037 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplement_studies?select=id%2Csupplement_id%2Cpmid%2Ctitle%2Cabstract&last_analyzed_at=is.null&order=supplement_id.asc%2Cid.asc&offset=0&limit=50 "HTTP/2 200 OK"
+2025-06-10 21:44:47,258 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.848 "HTTP/2 200 OK"
+2025-06-10 21:44:47,473 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.850 "HTTP/2 200 OK"
+2025-06-10 21:44:47,694 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.851 "HTTP/2 200 OK"
+2025-06-10 21:44:47,922 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.853 "HTTP/2 200 OK"
+2025-06-10 21:44:47,923 - Coordinator - src.database - INFO - Worker 0: Fetched 50 studies (offset: 0)
+2025-06-10 21:44:47,923 - Coordinator - src.coordinator - INFO - Distributing batch 0 with 50 studies
+2025-06-10 21:44:48,027 - Coordinator - src.coordinator - INFO - Work distribution complete. Distributed 50 studies in 1 batches
+2025-06-10 21:44:59,355 - Coordinator - src.coordinator - INFO - All work distributed and queue empty
+2025-06-10 21:44:59,355 - Coordinator - src.coordinator - INFO - Coordinator shutting down...
+2025-06-10 21:44:59,355 - Coordinator - src.coordinator - INFO - Stopping workers...
+2025-06-10 21:45:29,365 - Coordinator - src.coordinator - WARNING - Worker 0 did not stop gracefully, terminating...
+2025-06-10 21:45:29,383 - Coordinator - src.coordinator - INFO - Worker 0 stopped
+2025-06-10 21:45:29,384 - Coordinator - src.coordinator - INFO - Worker 1 stopped
+2025-06-10 21:45:29,385 - Coordinator - src.coordinator - INFO - Progress: 0/50 (0.0%) | Success rate: 0.00% | Speed: 0.00 papers/sec | Time remaining: inf minutes
+2025-06-10 21:45:29,385 - Coordinator - src.coordinator - INFO - Coordinator shutdown complete. Total runtime: 0.8 minutes
+2025-06-10 21:53:41,465 - Coordinator - src.storage - INFO - Loaded progress: 0/50 papers processed
+2025-06-10 21:53:41,465 - Coordinator - src.coordinator - INFO - Initializing coordinator...
+2025-06-10 21:53:41,471 - Coordinator - src.coordinator - INFO - Started worker 0 (PID: 59452)
+2025-06-10 21:53:41,482 - Coordinator - src.coordinator - INFO - Started worker 1 (PID: 28848)
+2025-06-10 21:53:41,482 - Coordinator - src.coordinator - INFO - Coordinator initialized with 2 workers
+2025-06-10 21:53:41,482 - Coordinator - src.coordinator - INFO - Starting coordinator...
+2025-06-10 21:53:43,909 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplement_studies?select=id&last_analyzed_at=is.null "HTTP/2 206 Partial Content"
+2025-06-10 21:53:43,909 - Coordinator - src.database - INFO - Total unanalyzed studies: 121718
+2025-06-10 21:53:43,909 - Coordinator - src.coordinator - INFO - TEST MODE: Limiting processing to 50 papers
+2025-06-10 21:53:43,909 - Coordinator - src.coordinator - INFO - Found 50 unanalyzed studies to process
+2025-06-10 21:53:44,369 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplement_studies?select=id%2Csupplement_id%2Cpmid%2Ctitle%2Cabstract&last_analyzed_at=is.null&order=supplement_id.asc%2Cid.asc&offset=0&limit=50 "HTTP/2 200 OK"
+2025-06-10 21:53:44,583 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.848 "HTTP/2 200 OK"
+2025-06-10 21:53:44,808 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.850 "HTTP/2 200 OK"
+2025-06-10 21:53:45,037 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.851 "HTTP/2 200 OK"
+2025-06-10 21:53:45,264 - Coordinator - httpx - INFO - HTTP Request: GET https://vmnmtglmhtielenzeqyb.supabase.co/rest/v1/supplements?select=name&id=eq.853 "HTTP/2 200 OK"
+2025-06-10 21:53:45,264 - Coordinator - src.database - INFO - Worker 0: Fetched 50 studies (offset: 0)
+2025-06-10 21:53:45,264 - Coordinator - src.coordinator - INFO - Distributing batch 0 with 50 studies
+2025-06-10 21:53:45,374 - Coordinator - src.coordinator - INFO - Work distribution complete. Distributed 50 studies in 1 batches
+2025-06-10 21:53:56,502 - Coordinator - src.coordinator - INFO - All work distributed and queue empty
+2025-06-10 21:53:56,503 - Coordinator - src.coordinator - INFO - Coordinator shutting down...
+2025-06-10 21:53:56,503 - Coordinator - src.coordinator - INFO - Stopping workers...
+2025-06-10 21:53:56,848 - Coordinator - src.coordinator - INFO - Worker 0 stopped
+2025-06-10 21:54:26,851 - Coordinator - src.coordinator - WARNING - Worker 1 did not stop gracefully, terminating...
+2025-06-10 21:54:26,874 - Coordinator - src.coordinator - INFO - Worker 1 stopped
+2025-06-10 21:54:26,874 - Coordinator - src.coordinator - INFO - Progress: 0/50 (0.0%) | Success rate: 0.00% | Speed: 0.00 papers/sec | Time remaining: inf minutes
+2025-06-10 21:54:26,875 - Coordinator - src.coordinator - INFO - Coordinator shutdown complete. Total runtime: 0.8 minutes

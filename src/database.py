@@ -32,24 +32,14 @@ class DatabaseManager:
         self._connection_semaphore = asyncio.Semaphore(MAX_CONNECTIONS_PER_WORKER)
     
     def _create_client(self) -> Client:
-        """Create a Supabase client with custom timeout"""
-        # Configure httpx client with timeout
-        httpx_client = httpx.Client(
-            timeout=httpx.Timeout(DB_TIMEOUT),
-            limits=httpx.Limits(max_connections=MAX_CONNECTIONS_PER_WORKER)
-        )
-        
-        return create_client(
-            SUPABASE_URL,
-            SUPABASE_KEY,
-            options={
-                'httpx_client': httpx_client
-            }
-        )
+        """Create a Supabase client"""
+        # Create a basic client without custom httpx settings for now
+        # The supabase-py library handles its own connection pooling
+        return create_client(SUPABASE_URL, SUPABASE_KEY)
     
     @backoff.on_exception(
         backoff.expo,
-        (httpx.RequestError, httpx.TimeoutException),
+        Exception,  # Catch general exceptions for now
         max_tries=DB_MAX_RETRIES,
         max_time=60
     )
@@ -164,11 +154,8 @@ class DatabaseManager:
     
     def close(self):
         """Close database connection"""
-        try:
-            if hasattr(self.client, '_http_client'):
-                self.client._http_client.close()
-        except Exception as e:
-            logger.error(f"Error closing database connection: {e}")
+        # Supabase client doesn't need explicit closing in the current version
+        logger.debug(f"Database connection closed for worker {self.worker_id}")
 
 
 class DatabasePool:

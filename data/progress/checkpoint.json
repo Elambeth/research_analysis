@@ -1,0 +1,13 @@
+{
+  "total_papers": 50,
+  "processed_papers": 0,
+  "failed_papers": 0,
+  "current_batch_id": 0,
+  "batches_completed": [],
+  "start_time": "2025-06-10T21:28:38.062850",
+  "last_update": "2025-06-10T21:28:38.062850",
+  "error_counts": {},
+  "success_rate": 0.0,
+  "papers_per_second": 0.0,
+  "estimated_time_remaining_seconds": Infinity
+}

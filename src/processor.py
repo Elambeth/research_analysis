@@ -38,9 +38,9 @@ class DeepSeekProcessor:
         """Get the system message for the API"""
         return """You are a scientific research analysis expert. Follow these instructions carefully:
         
-        1. When asked to rate on a scale of 1-10, ALWAYS respond with a single integer between 1 and 10.
+        1. When asked to rate on a scale of 1-100, ALWAYS respond with a single integer between 1 and 100.
         2. If information is not available to assess a category, respond ONLY with "Not Assessed" (no other explanation).
-        3. For safety, efficacy, and quality scores, you must provide either a single integer (1-10) or "Not Assessed".
+        3. For safety, efficacy, and quality scores, you must provide either a single integer (1-100) or "Not Assessed".
         4. Do not include explanations within the score fields.
         5. Format your response exactly as requested in the prompt."""
     
@@ -55,11 +55,11 @@ Abstract to analyze:
 
 Based on the abstract above, provide the following information:
 
-- Safety Score (1-10): Evaluate whether the study demonstrates that {supplement_name} is safe for human consumption. Consider reported adverse events, side effects, toxicity information, contraindications, and safety profiles across different dosages. A score of 1 indicates significant safety concerns, while 10 indicates excellent safety with no reported adverse effects. If safety is not addressed in the study, mark as "Not Assessed."
+- Safety Score (1-100): Evaluate whether the study demonstrates that {supplement_name} is safe for human consumption. Consider reported adverse events, side effects, toxicity information, contraindications, and safety profiles across different dosages. A score of 1 indicates significant safety concerns, while 10 indicates excellent safety with no reported adverse effects. If safety is not addressed in the study, mark as "Not Assessed."
 
-- Efficacy Score (1-10): Rate how effectively the supplement achieved its intended outcomes based on the study results. Consider statistical significance, effect size, clinical relevance, and consistency of results. A score of 1 indicates no demonstrable effect, 5 indicates modest effects, and 10 indicates strong, clinically meaningful outcomes. If the study shows mixed results, explain the context.
+- Efficacy Score (1-100): Rate how effectively the supplement achieved its intended outcomes based on the study results. Consider statistical significance, effect size, clinical relevance, and consistency of results. A score of 1 indicates no demonstrable effect, 5 indicates modest effects, and 10 indicates strong, clinically meaningful outcomes. If the study shows mixed results, explain the context.
 
-- Study Quality Score (1-10): Evaluate the methodological rigor of the study based on:
+- Study Quality Score (1-100): Evaluate the methodological rigor of the study based on:
   * Study design (RCT > cohort > case-control > case series)
   * Sample size (larger samples receive higher scores)
   * Appropriate controls and blinding procedures
@@ -69,7 +69,7 @@ Based on the abstract above, provide the following information:
   * Peer-review status and journal reputation
 
 Scoring Guidelines:
-When assigning scores from 1-10, please use the full range of the scale. Avoid clustering scores in the middle range (4-7) simply to appear moderate. Each score should accurately reflect the paper's merits on that dimension, even if that means giving very high (9-10) or very low (1-2) scores when warranted.
+When assigning scores from 1-100, please use the full range of the scale. Avoid clustering scores in the middle range (40-70) simply to appear moderate. Each score should accurately reflect the paper's merits on that dimension, even if that means giving very high (90-100) or very low (1-20) scores when warranted.
 
 - Study Goal: In 1-2 sentences, describe what the researchers were attempting to determine about {supplement_name}.
 
@@ -85,9 +85,9 @@ When assigning scores from 1-10, please use the full range of the scale. Avoid c
 
 Format your response as follows:
 
-SAFETY SCORE: [1-10 or "Not Assessed"]
-EFFICACY SCORE: [1-10]
-QUALITY SCORE: [1-10]
+SAFETY SCORE: [1-100 or "Not Assessed"]
+EFFICACY SCORE: [1-100]
+QUALITY SCORE: [1-100]
 GOAL: [1-2 sentences]
 RESULTS: [2-3 sentences]
 POPULATION: [Brief description]
@@ -102,10 +102,18 @@ INTERACTIONS: [Any noted interactions or "None mentioned"]"""
         base=API_RETRY_DELAY,
         factor=API_RETRY_BACKOFF
     )
+    # In processor.py, modify the analyze_study method to add debug logging:
+
     async def analyze_study(self, study: Study) -> AnalysisResult:
         """Analyze a single study using DeepSeek API"""
+        logger.info(f"Starting analysis for study {study.id} - {study.supplement_name}")
+        
         if not study.abstract:
+            logger.warning(f"No abstract for study {study.id}, skipping")
             raise ProcessorError("No abstract available for analysis")
+        
+        # Log abstract length
+        logger.debug(f"Abstract length for study {study.id}: {len(study.abstract)} chars")
         
         payload = {
             "model": DEEPSEEK_MODEL,
@@ -117,18 +125,25 @@ INTERACTIONS: [Any noted interactions or "None mentioned"]"""
         }
         
         try:
+            logger.debug(f"Sending API request for study {study.id}")
+            
             async with self.session.post(
                 self.url,
                 headers=self.headers,
                 json=payload,
                 timeout=aiohttp.ClientTimeout(total=API_TIMEOUT)
             ) as response:
+                logger.debug(f"Got response status {response.status} for study {study.id}")
+                
                 if response.status != 200:
                     text = await response.text()
+                    logger.error(f"API error for study {study.id}: {text}")
                     raise ProcessorError(f"API returned status {response.status}: {text}")
                 
                 data = await response.json()
                 result_text = data["choices"][0]["message"]["content"]
+                
+                logger.info(f"Successfully analyzed study {study.id}")
                 
                 # Parse the response
                 parsed = self._parse_response(result_text)
@@ -151,8 +166,10 @@ INTERACTIONS: [Any noted interactions or "None mentioned"]"""
                 )
                 
         except asyncio.TimeoutError:
+            logger.error(f"API timeout for study {study.id} after {API_TIMEOUT} seconds")
             raise ProcessorError(f"API timeout after {API_TIMEOUT} seconds")
         except Exception as e:
+            logger.error(f"API error for study {study.id}: {str(e)}")
             raise ProcessorError(f"API error: {str(e)}")
     
     def _parse_response(self, response_text: str) -> Dict[str, Any]:

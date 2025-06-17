@@ -8,6 +8,8 @@ from datetime import datetime
 import aiofiles
 import logging
 from threading import Lock
+from google.cloud import storage
+import os
 
 from src.config import (
     COMPLETED_DIR, FAILED_DIR, PROGRESS_DIR, CHECKPOINT_FILE,
@@ -207,3 +209,63 @@ class ProgressTracker:
                 'current_batch': self.progress.current_batch_id,
                 'error_counts': self.progress.error_counts
             }
+        
+
+class CloudStorageExporter:
+    """Export results to Google Cloud Storage"""
+    
+    def __init__(self, bucket_name="supplement-analysis-results"):
+        self.bucket_name = bucket_name
+        self.client = None
+        self.bucket = None
+        self._initialize_client()
+    
+    def _initialize_client(self):
+        """Initialize Cloud Storage client"""
+        try:
+            self.client = storage.Client()
+            self.bucket = self.client.bucket(self.bucket_name)
+            logger.info(f"Connected to Cloud Storage bucket: {self.bucket_name}")
+        except Exception as e:
+            logger.error(f"Failed to connect to Cloud Storage: {e}")
+            self.client = None
+    
+    async def export_completed_batches(self):
+        """Export all completed batch files to Cloud Storage"""
+        if not self.client:
+            logger.error("Cloud Storage not available, skipping export")
+            return
+        
+        try:
+            batch_files = list(COMPLETED_DIR.glob("batch_*.jsonl"))
+            logger.info(f"Exporting {len(batch_files)} batch files to Cloud Storage...")
+            
+            for batch_file in batch_files:
+                # Upload each batch file
+                blob_name = f"completed/{batch_file.name}"
+                blob = self.bucket.blob(blob_name)
+                
+                with open(batch_file, 'rb') as f:
+                    blob.upload_from_file(f)
+                
+                logger.info(f"Exported {batch_file.name} to gs://{self.bucket_name}/{blob_name}")
+            
+            # Export failed papers if any
+            failed_file = FAILED_DIR / "failed_papers.jsonl"
+            if failed_file.exists():
+                blob = self.bucket.blob("failed/failed_papers.jsonl")
+                with open(failed_file, 'rb') as f:
+                    blob.upload_from_file(f)
+                logger.info("Exported failed papers to Cloud Storage")
+            
+            # Export progress file
+            if CHECKPOINT_FILE.exists():
+                blob = self.bucket.blob("progress/checkpoint.json")
+                with open(CHECKPOINT_FILE, 'rb') as f:
+                    blob.upload_from_file(f)
+                logger.info("Exported progress file to Cloud Storage")
+            
+            logger.info("✅ All results exported to Cloud Storage successfully!")
+            
+        except Exception as e:
+            logger.error(f"Failed to export to Cloud Storage: {e}")

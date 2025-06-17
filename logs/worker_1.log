@@ -58,3 +58,6 @@
 2025-06-10 21:54:24,030 - Worker-1 - src.processor - INFO - Starting analysis for study 1401 - 5-HTP
 2025-06-10 21:54:25,090 - Worker-1 - src.processor - INFO - Successfully analyzed study 1398
 2025-06-10 21:54:25,097 - Worker-1 - src.processor - INFO - Starting analysis for study 1402 - 5-HTP
+2025-06-13 19:46:42,512 - Worker-1 - src.processor - INFO - Initialized processor pool with 3 processors
+2025-06-13 19:46:42,512 - Worker-1 - src.worker - INFO - Worker 1 initialized
+2025-06-13 19:46:42,512 - Worker-1 - src.worker - INFO - Worker 1 starting

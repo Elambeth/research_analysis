@@ -62,6 +62,7 @@ class Worker:
     
     # In worker.py, modify the process_study method to skip studies without abstracts:
 
+
     async def process_study(self, study: Study):
         """Process a single study"""
         # Skip if no abstract
@@ -79,6 +80,9 @@ class Worker:
             await self.storage.save_failed(failed_paper)
             
             self.failed_count += 1
+            
+            # Report progress for failed study
+            self._report_progress(None)
             return
         
         try:
@@ -91,9 +95,12 @@ class Worker:
             # Update statistics
             self.processed_count += 1
             
+            # Report progress after each successful study
+            self._report_progress(None)
+            
             # Log progress periodically
-            if self.processed_count % 10 == 0:
-                logger.debug(f"Worker {self.worker_id}: Processed {self.processed_count} studies")
+            if self.processed_count % 5 == 0:
+                logger.info(f"Worker {self.worker_id}: Processed {self.processed_count} studies successfully")
             
         except ProcessorError as e:
             # Handle known processor errors
@@ -110,6 +117,9 @@ class Worker:
             
             self.failed_count += 1
             
+            # Report progress for failed study
+            self._report_progress(None)
+            
         except Exception as e:
             # Handle unexpected errors
             logger.error(f"Worker {self.worker_id}: Unexpected error processing study {study.id}: {e}")
@@ -125,6 +135,9 @@ class Worker:
             await self.storage.save_failed(failed_paper)
             
             self.failed_count += 1
+            
+            # Report progress for failed study
+            self._report_progress(None)
     
     async def process_batch(self, batch: WorkBatch):
         """Process a batch of studies"""

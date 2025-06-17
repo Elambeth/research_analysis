@@ -95,3 +95,9 @@
 2025-06-10 21:54:26,874 - Coordinator - src.coordinator - INFO - Worker 1 stopped
 2025-06-10 21:54:26,874 - Coordinator - src.coordinator - INFO - Progress: 0/50 (0.0%) | Success rate: 0.00% | Speed: 0.00 papers/sec | Time remaining: inf minutes
 2025-06-10 21:54:26,875 - Coordinator - src.coordinator - INFO - Coordinator shutdown complete. Total runtime: 0.8 minutes
+2025-06-13 19:46:41,415 - Coordinator - src.storage - INFO - Loaded progress: 0/50 papers processed
+2025-06-13 19:46:41,415 - Coordinator - src.coordinator - INFO - Initializing coordinator...
+2025-06-13 19:46:41,449 - Coordinator - src.coordinator - INFO - Started worker 0 (PID: 19108)
+2025-06-13 19:46:41,461 - Coordinator - src.coordinator - INFO - Started worker 1 (PID: 52228)
+2025-06-13 19:46:41,461 - Coordinator - src.coordinator - INFO - Coordinator initialized with 2 workers
+2025-06-13 19:46:41,461 - Coordinator - src.coordinator - ERROR - Fatal error in coordinator: 'Coordinator' object has no attribute 'run'

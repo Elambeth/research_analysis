@@ -29,3 +29,6 @@
 2025-06-10 21:53:56,503 - Worker-0 - src.worker - INFO - Worker 0: Final stats - Processed: 0, Failed: 0
 2025-06-10 21:53:56,763 - Worker-0 - src.storage - INFO - Storage finalized. Total batches: 0
 2025-06-10 21:53:56,764 - Worker-0 - src.worker - INFO - Worker 0 cleaned up
+2025-06-13 19:46:42,512 - Worker-0 - src.processor - INFO - Initialized processor pool with 3 processors
+2025-06-13 19:46:42,512 - Worker-0 - src.worker - INFO - Worker 0 initialized
+2025-06-13 19:46:42,512 - Worker-0 - src.worker - INFO - Worker 0 starting

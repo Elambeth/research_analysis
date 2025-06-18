@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from src.database import DatabaseManager
-from src.config import FETCH_BATCH_SIZE
+from src.config_cloud import FETCH_BATCH_SIZE
 
 async def check_studies():
     """Check the first batch of studies"""

@@ -8,7 +8,7 @@ import backoff
 from supabase import create_client, Client
 import httpx
 
-from src.config import (
+from src.config_cloud import (
     SUPABASE_URL, SUPABASE_KEY, FETCH_BATCH_SIZE,
     DB_MAX_RETRIES, DB_RETRY_DELAY, DB_TIMEOUT,
     MAX_CONNECTIONS_PER_WORKER

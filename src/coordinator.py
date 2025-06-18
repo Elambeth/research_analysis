@@ -1,4 +1,4 @@
-# coordinator.py
+# coordinator.py - SYNTHESIZED VERSION
 """Main coordinator for the supplement analysis system"""
 import asyncio
 import logging
@@ -8,10 +8,10 @@ import sys
 import time
 from datetime import datetime
 from typing import List, Optional
-from src.config import TEST_MODE, MAX_PAPERS_TEST
+from src.config_cloud import TEST_MODE, MAX_PAPERS_TEST
 import psutil
 
-from src.config import (
+from src.config_cloud import (
     NUM_WORKERS, FETCH_BATCH_SIZE, PROGRESS_UPDATE_INTERVAL,
     MAX_MEMORY_PERCENT, MAX_ERROR_RATE
 )
@@ -173,8 +173,6 @@ class Coordinator:
     def _process_progress_updates(self):
         """Process progress updates from workers"""
         processed_updates = 0
-        total_processed = 0
-        total_failed = 0
         
         while True:
             try:
@@ -212,70 +210,70 @@ class Coordinator:
                 f"Time remaining: {stats['estimated_remaining']}"
             )
     
-async def run(self):
-    """Main coordinator loop"""
-    logger.info("Starting coordinator...")
-    
-    try:
-        # Start distributing work
-        distribution_task = asyncio.create_task(self._distribute_work())
+    async def run(self):
+        """Main coordinator loop"""
+        logger.info("Starting coordinator...")
         
-        # Monitor progress
-        last_progress_check = time.time()
-        no_progress_counter = 0
-        
-        while not self.shutdown_event.is_set():
-            # Process progress updates
-            self._process_progress_updates()
+        try:
+            # Start distributing work
+            distribution_task = asyncio.create_task(self._distribute_work())
             
-            # Check if distribution is complete and all workers are idle
-            if distribution_task.done() and self.work_queue.empty():
-                # Check if we're still making progress
-                current_progress = self.progress_tracker.get_progress()
-                if current_progress:
-                    # If we've processed everything, we're done
-                    if current_progress.processed_papers >= current_progress.total_papers:
-                        logger.info("All papers processed!")
-                        break
-                    
-                    # If no progress for 60 seconds, assume we're done
-                    if time.time() - last_progress_check > 60:
-                        no_progress_counter += 1
-                        if no_progress_counter >= 2:  # No progress for 2 minutes
-                            logger.info("No progress detected for 2 minutes, assuming complete")
+            # Monitor progress
+            last_progress_check = time.time()
+            no_progress_counter = 0
+            
+            while not self.shutdown_event.is_set():
+                # Process progress updates
+                self._process_progress_updates()
+                
+                # Check if distribution is complete and all workers are idle
+                if distribution_task.done() and self.work_queue.empty():
+                    # Check if we're still making progress
+                    current_progress = self.progress_tracker.get_progress()
+                    if current_progress:
+                        # If we've processed everything, we're done
+                        if current_progress.processed_papers >= current_progress.total_papers:
+                            logger.info("All papers processed!")
                             break
-                    else:
-                        no_progress_counter = 0
-                        last_progress_check = time.time()
+                        
+                        # If no progress for 60 seconds, assume we're done
+                        if time.time() - last_progress_check > 60:
+                            no_progress_counter += 1
+                            if no_progress_counter >= 2:  # No progress for 2 minutes
+                                logger.info("No progress detected for 2 minutes, assuming complete")
+                                break
+                        else:
+                            no_progress_counter = 0
+                            last_progress_check = time.time()
+                
+                # Check worker health
+                alive_workers = sum(1 for w in self.workers if w.is_alive())
+                if alive_workers < NUM_WORKERS:
+                    logger.warning(f"Only {alive_workers}/{NUM_WORKERS} workers alive")
+                
+                await asyncio.sleep(PROGRESS_UPDATE_INTERVAL)
             
-            # Check worker health
-            alive_workers = sum(1 for w in self.workers if w.is_alive())
-            if alive_workers < NUM_WORKERS:
-                logger.warning(f"Only {alive_workers}/{NUM_WORKERS} workers alive")
+            # Wait for distribution to complete if interrupted
+            if not distribution_task.done():
+                distribution_task.cancel()
+                await asyncio.gather(distribution_task, return_exceptions=True)
             
-            await asyncio.sleep(PROGRESS_UPDATE_INTERVAL)
+        except Exception as e:
+            logger.error(f"Coordinator error: {e}")
+            raise
         
-        # Wait for distribution to complete if interrupted
-        if not distribution_task.done():
-            distribution_task.cancel()
-            await asyncio.gather(distribution_task, return_exceptions=True)
-        
-    except Exception as e:
-        logger.error(f"Coordinator error: {e}")
-        raise
-    
-    finally:
-        logger.info("Coordinator shutting down...")
-        self._stop_workers()
-        
-        # Final progress update
-        self._update_and_display_progress()
-        
-        # Close database
-        self.db.close()
-        
-        elapsed = (datetime.now() - self.start_time).total_seconds() / 60
-        logger.info(f"Coordinator shutdown complete. Total runtime: {elapsed:.1f} minutes")
+        finally:
+            logger.info("Coordinator shutting down...")
+            self._stop_workers()
+            
+            # Final progress update
+            self._update_and_display_progress()
+            
+            # Close database
+            self.db.close()
+            
+            elapsed = (datetime.now() - self.start_time).total_seconds() / 60
+            logger.info(f"Coordinator shutdown complete. Total runtime: {elapsed:.1f} minutes")
 
 
 async def coordinator_main():

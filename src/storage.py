@@ -11,7 +11,7 @@ from threading import Lock
 from google.cloud import storage
 import os
 
-from src.config import (
+from src.config_cloud import (
     COMPLETED_DIR, FAILED_DIR, PROGRESS_DIR, CHECKPOINT_FILE,
     LOCAL_SAVE_BATCH_SIZE
 )

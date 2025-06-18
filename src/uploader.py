@@ -8,7 +8,7 @@ from typing import List, Dict, Any
 from datetime import datetime
 import sys
 
-from src.config import COMPLETED_DIR, UPLOAD_BATCH_SIZE
+from src.config_cloud import COMPLETED_DIR, UPLOAD_BATCH_SIZE
 from src.database import DatabaseManager
 from src.models import AnalysisResult
 from src.storage import StorageManager

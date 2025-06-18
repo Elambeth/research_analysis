@@ -8,7 +8,7 @@ from typing import Optional, Dict, Any, List
 from datetime import datetime, timezone
 import backoff
 
-from src.config import (
+from src.config_cloud import (
     DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL, DEEPSEEK_MODEL,
     API_MAX_RETRIES, API_RETRY_DELAY, API_RETRY_BACKOFF,
     API_TIMEOUT, TEMPERATURE, PROMPT_VERSION
@@ -38,7 +38,7 @@ class DeepSeekProcessor:
         """Get the system message for the API"""
         return """You are a scientific research analysis expert. Follow these instructions carefully:
         
-        1. When asked to rate on a scale of 1-100, ALWAYS respond with a single integer between 1 and 100.
+        1. When asked to rate on a scale of 1-100, ALWAYS respond with a single integer ANYWHERE between 1 and 100.
         2. If information is not available to assess a category, respond ONLY with "Not Assessed" (no other explanation).
         3. For safety, efficacy, and quality scores, you must provide either a single integer (1-100) or "Not Assessed".
         4. Do not include explanations within the score fields.
@@ -69,7 +69,7 @@ Based on the abstract above, provide the following information:
   * Peer-review status and journal reputation
 
 Scoring Guidelines:
-When assigning scores from 1-100, please use the full range of the scale. Avoid clustering scores in the middle range (40-70) simply to appear moderate. Each score should accurately reflect the paper's merits on that dimension, even if that means giving very high (90-100) or very low (1-20) scores when warranted.
+When assigning scores from 1-100, please use the full range of the scale. Avoid clustering scores in the middle range (from 40-70) simply to appear moderate. Each score should accurately reflect the paper's merits on that dimension, even if that means giving very high (from 90-100) or very low (from 1-20) scores when warranted.
 
 - Study Goal: In 1-2 sentences, describe what the researchers were attempting to determine about {supplement_name}.
 

@@ -10,7 +10,7 @@ import multiprocessing as mp
 import traceback
 import queue
 
-from src.config import TASKS_PER_WORKER, PROGRESS_UPDATE_INTERVAL
+from src.config_cloud import TASKS_PER_WORKER, PROGRESS_UPDATE_INTERVAL
 from src.database import DatabaseManager
 from src.processor import ProcessorPool, ProcessorError
 from src.storage import StorageManager

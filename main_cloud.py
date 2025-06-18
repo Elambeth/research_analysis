@@ -1,17 +1,17 @@
-# main_cloud.py - Cloud-optimized entry point
+# main_cloud.py - Cloud-optimized entry point (FIXED VERSION)
 import sys
 import multiprocessing as mp
 from pathlib import Path
 import logging
 
-# Use cloud config
+# CRITICAL: Set up path and config BEFORE any other imports
 sys.path.insert(0, str(Path(__file__).parent))
-from src import config_cloud as config
 
-# Replace config in other modules
-import src.coordinator
+# Import and set cloud config FIRST
+from src import config_cloud as config
 sys.modules['src.config'] = config
 
+# Now import coordinator (it will use our cloud config)
 from src.coordinator import run_coordinator
 
 def main():
@@ -33,7 +33,16 @@ def main():
     logger.info(f"Workers: {config.NUM_WORKERS}")
     logger.info(f"Tasks per worker: {config.TASKS_PER_WORKER}")
     logger.info(f"Total concurrent API calls: {config.TOTAL_MAX_CONNECTIONS}")
-    logger.info("Processing ALL papers (TEST_MODE disabled)")
+    logger.info(f"Test Mode: {config.TEST_MODE}")  # Added this line for debugging
+    
+    # Verify we're using the right config
+    if hasattr(config, 'TEST_MODE') and config.TEST_MODE:
+        logger.warning("⚠️ WARNING: Still in TEST_MODE! Check configuration.")
+        if hasattr(config, 'MAX_PAPERS_TEST'):
+            logger.warning(f"⚠️ Will only process {config.MAX_PAPERS_TEST} papers")
+    else:
+        logger.info("✅ Production mode: Processing ALL papers")
+    
     logger.info("="*60)
     
     try:
@@ -57,9 +66,6 @@ def main():
     except Exception as e:
         logger.error(f"❌ Batch job failed: {e}")
         sys.exit(1)
-
-if __name__ == "__main__":
-    main()
 
 if __name__ == "__main__":
     main()

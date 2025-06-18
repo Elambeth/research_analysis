@@ -10,7 +10,7 @@ import os
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from src.config import PROGRESS_DIR, COMPLETED_DIR, FAILED_DIR
+from src.config_cloud import PROGRESS_DIR, COMPLETED_DIR, FAILED_DIR
 
 
 def get_file_stats():

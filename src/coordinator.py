@@ -86,26 +86,23 @@ class Coordinator:
                 worker.join()
             logger.info(f"Worker {i} stopped")
     
-    async def _distribute_work(self):
-        """Distribute work to workers"""
-        try:
-            # Get total count
-            total_count = await self.db.get_total_unanalyzed_count()
-            if total_count == 0:
-                logger.info("No unanalyzed studies found")
-                return
-            
-            if TEST_MODE and total_count > MAX_PAPERS_TEST:
-                logger.info(f"TEST MODE: Limiting processing to {MAX_PAPERS_TEST} papers")
-                total_count = MAX_PAPERS_TEST
+    # Just replace the _distribute_work method in your coordinator.py with this:
 
-            logger.info(f"Found {total_count} unanalyzed studies to process")
-            self.progress_tracker.initialize(total_count)
+    async def _distribute_work(self):
+        """Distribute work to workers - SIMPLIFIED VERSION"""
+        try:
+            logger.info("Starting work distribution (skipping total count)")
             
-            # Process in batches
+            # Initialize progress tracker with a large estimate
+            estimated_total = 50000  # Adjust based on your data size
+            self.progress_tracker.initialize(estimated_total)
+            
+            # Process in batches until no more studies
             offset = 0
+            consecutive_empty_batches = 0
+            papers_distributed = 0
             
-            while offset < total_count and not self.shutdown_event.is_set():
+            while not self.shutdown_event.is_set():
                 # Check system resources
                 if not self._check_system_health():
                     logger.error("System health check failed, stopping distribution")
@@ -118,8 +115,31 @@ class Coordinator:
                 )
                 
                 if not studies:
-                    logger.info("No more studies to process")
+                    consecutive_empty_batches += 1
+                    logger.info(f"No studies found at offset {offset} (empty batch #{consecutive_empty_batches})")
+                    
+                    # If we get 3 consecutive empty batches, we're probably done
+                    if consecutive_empty_batches >= 3:
+                        logger.info("Multiple consecutive empty batches - processing complete")
+                        break
+                    
+                    # Skip ahead in case there are gaps in the data
+                    offset += FETCH_BATCH_SIZE
+                    continue
+                else:
+                    consecutive_empty_batches = 0  # Reset counter
+                
+                # TEST MODE: Check if we've hit the limit
+                if TEST_MODE and MAX_PAPERS_TEST and papers_distributed >= MAX_PAPERS_TEST:
+                    logger.info(f"TEST MODE: Reached limit of {MAX_PAPERS_TEST} papers")
                     break
+                
+                # Trim batch if needed for test mode
+                if TEST_MODE and MAX_PAPERS_TEST:
+                    remaining_allowed = MAX_PAPERS_TEST - papers_distributed
+                    if len(studies) > remaining_allowed:
+                        studies = studies[:remaining_allowed]
+                        logger.info(f"TEST MODE: Trimmed batch to {len(studies)} papers")
                 
                 # Create work batch
                 batch = WorkBatch(
@@ -128,14 +148,15 @@ class Coordinator:
                     created_at=datetime.now()
                 )
                 
-                # Put in queue (blocks if queue is full)
-                logger.info(f"Distributing batch {self.batch_counter} with {len(studies)} studies")
+                # Put in queue
+                logger.info(f"Distributing batch {self.batch_counter} with {len(studies)} studies (offset: {offset})")
                 await asyncio.get_event_loop().run_in_executor(
                     None, self.work_queue.put, batch.to_dict()
                 )
                 
                 self.batch_counter += 1
                 self.total_distributed += len(studies)
+                papers_distributed += len(studies)
                 offset += len(studies)
                 
                 # Small delay to prevent overwhelming

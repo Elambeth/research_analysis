@@ -1,4 +1,4 @@
-# src/config_cloud.py - Production Cloud Configuration
+# src/config_cloud.py - SAFER PRODUCTION CONFIGURATION
 import os
 from pathlib import Path
 import dotenv
@@ -12,20 +12,21 @@ DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 DEEPSEEK_MODEL = "deepseek-chat"
 
-# CLOUD OPTIMIZED SETTINGS
+# CLOUD OPTIMIZED SETTINGS - SAFER BATCH SIZES
 NUM_WORKERS = 12                   # Optimized for cloud
 TASKS_PER_WORKER = 8              # High concurrency
 MAX_CONNECTIONS_PER_WORKER = 8
 TOTAL_MAX_CONNECTIONS = 96
 
-# Batch sizes optimized for cloud
-FETCH_BATCH_SIZE = 300            # Larger batches
-LOCAL_SAVE_BATCH_SIZE = 1000      
+# SAFER Batch sizes - reduced to minimize loss if something fails
+FETCH_BATCH_SIZE = 300            # Larger batches for efficiency
+LOCAL_SAVE_BATCH_SIZE = 200       # REDUCED from 1000 - uploads every 200 papers
 UPLOAD_BATCH_SIZE = 100
 
-# PROCESS ALL PAPERS
+# PROCESS ALL PAPERS - NO LIMITS
 TEST_MODE = False                 
 MAX_PAPERS_TEST = None
+
 # Cloud-optimized retry settings
 API_MAX_RETRIES = 5
 API_RETRY_DELAY = 1

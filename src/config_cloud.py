@@ -25,7 +25,7 @@ UPLOAD_BATCH_SIZE = 100
 
 # PROCESS ALL PAPERS
 TEST_MODE = False                 
-
+MAX_PAPERS_TEST = None
 # Cloud-optimized retry settings
 API_MAX_RETRIES = 5
 API_RETRY_DELAY = 1
